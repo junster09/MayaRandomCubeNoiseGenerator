@@ -1,7 +1,7 @@
 """
 ForWeekFourAssignment.py
 
-A script that makes a new scene, runs "randomCubes", then saves the file
+A Utility Script for GUIOverlordScript.py
 
 """
 
@@ -11,16 +11,22 @@ import random
 import os
 print os.environ["HOME"]
 
-#reload(rca)
-
-
 """
-randomCubes(**kwargs)
-
-Random cubes will use numOfCubes and generate that amount of cubes in a random space.
+colorSelect is a global variable that stores lists for colors
 """
+colorSelect = []
+colorSelect.append([1,0,0]) #red
+colorSelect.append([0,1,0]) #green
+colorSelect.append([0,0,1]) #blue
+colorSelect.append([1,0,1])  #magenta
+colorSelect.append([1,1,0]) #yellow
 
 def randomCubes(**kwargs):
+    """
+    randomCubes(**kwargs)
+    
+    randomCubes(**kwargs) will take arguements from GUIOverlordScript, unpack them and generate cubes based on them
+    """
     startFrame = mc.playbackOptions(query = True, minTime = True)
     endFrame = mc.playbackOptions(query = True, maxTime = True)
     
@@ -71,7 +77,7 @@ def randomCubes(**kwargs):
         cube = mc.polyCube(height=random.randint(sizeRandom[0],sizeRandom[1]),depth=random.randint(sizeRandom[0],sizeRandom[1]),width=random.randint(sizeRandom[0],sizeRandom[1]),name="ModCube1")
         
         if(allowColor):
-            AddColorToObject(cube)
+            setShader(cube,0)
             
         #do frame anim
         setKeyFrames(cube,minJitter,maxJitter,startFrame,endFrame)
@@ -80,14 +86,14 @@ def randomCubes(**kwargs):
         setKeyFrames(cube,minJitter,maxJitter,(halfFrame/1.5))
         
         mc.parent(cube,grp)
-"""
-setKeyFrames(Obj obj,Array[3] minJitter, Array[3] maxJitter, Int *frame)
-
-wil set a new random position of obj and keyframe it at frame
-"""
 
 def setKeyFrames(obj,minJitter,maxJitter,*frames):
+    """
+    setKeyFrames(Obj obj,Array[3] minJitter, Array[3] maxJitter, Int *frame)
     
+    wil set a new random position of obj and keyframe it at frame
+    """
+
     #random position
     rx = random.randint(minJitter[0],maxJitter[0])
     ry = random.randint(minJitter[1],maxJitter[1])
@@ -105,12 +111,13 @@ def setKeyFrames(obj,minJitter,maxJitter,*frames):
         mc.setKeyframe(obj,at = "translateY", v= ry)
         mc.setKeyframe(obj,at = "translateZ", v= rz)
     
-"""
-AddColorToObject(obj)
 
-will apply a color to a geometry in the editor.
-"""
 def AddColorToObject(objectToColor):
+    """
+    AddColorToObject(obj)
+    
+    will apply a color to a geometry in the editor.
+    """
     mc.select(clear=True)
     numVertex = mc.polyEvaluate(objectToColor,vertex=True)
     
@@ -121,12 +128,33 @@ def AddColorToObject(objectToColor):
         mc.select(vtxName)
         mc.polyColorPerVertex(colorRGB=[random.uniform(0.0,1.0),random.uniform(0.0,1.0),random.uniform(0.0,1.0)],colorDisplayOption=True)
         
-"""
-createShapeFast(s)
+def setShader(poly,color):
+    """
+    setShader(poly,color)
+        INPUT:
+            Object poly                   the polygon that you want shaded
+            List[int,int,int] color       the color that you want the polygon
 
-Will create and extrude a polySphere.
-"""
+        this function will create a blinn shader with the given color then it will assign it to poly
+    """
+    #create shader
+    myShader = mc.shadingNode("blinn",asShader=True)
+
+    #sets shader colors
+    specShaderR = mc.setAttr(myShader + ".colorR",color[0])
+    specShaderG = mc.setAttr(myShader + ".colorG",color[1])
+    specShaderB = mc.setAttr(myShader + ".colorB",color[2])
+
+    #assign
+    mc.select(poly[0])
+    mc.hyperShade(assign=myShader)
+    
 def createShapeFast(s):
+    """
+    createShapeFast(s)
+    
+    Will create and extrude a polySphere.
+    """
     obj = mc.polySphere(r=s,name="ModSphere1")
     
     polycount = mc.polyEvaluate(obj[0],face = True)

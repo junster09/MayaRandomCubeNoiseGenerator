@@ -8,6 +8,7 @@ This script is a GUI interface for "ForWeekFourAssignment.py" based on the "Opti
 import maya.cmds as mc
 import ForWeekFourAssignment as fwf
 import OptionsWindowBaseClass as OWBC
+
 reload(fwf)
 reload(OWBC)
 
