@@ -77,7 +77,7 @@ def randomCubes(**kwargs):
         cube = mc.polyCube(height=random.randint(sizeRandom[0],sizeRandom[1]),depth=random.randint(sizeRandom[0],sizeRandom[1]),width=random.randint(sizeRandom[0],sizeRandom[1]),name="ModCube1")
         
         if(allowColor):
-            setShader(cube,0)
+            setShader(cube,colorSelect[0])
             
         #do frame anim
         setKeyFrames(cube,minJitter,maxJitter,startFrame,endFrame)
@@ -110,23 +110,6 @@ def setKeyFrames(obj,minJitter,maxJitter,*frames):
         mc.setKeyframe(obj,at = "translateX", v= rx)
         mc.setKeyframe(obj,at = "translateY", v= ry)
         mc.setKeyframe(obj,at = "translateZ", v= rz)
-    
-
-def AddColorToObject(objectToColor):
-    """
-    AddColorToObject(obj)
-    
-    will apply a color to a geometry in the editor.
-    """
-    mc.select(clear=True)
-    numVertex = mc.polyEvaluate(objectToColor,vertex=True)
-    
-    for i in range(0,numVertex,random.randint(1,2)):
-        
-        vtxName = objectToColor[0] + ".vtx[%s]"%i
-        
-        mc.select(vtxName)
-        mc.polyColorPerVertex(colorRGB=[random.uniform(0.0,1.0),random.uniform(0.0,1.0),random.uniform(0.0,1.0)],colorDisplayOption=True)
         
 def setShader(poly,color):
     """
