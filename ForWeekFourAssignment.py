@@ -76,8 +76,10 @@ def randomCubes(**kwargs):
         #cube has random height/depth/width properties
         cube = mc.polyCube(height=random.randint(sizeRandom[0],sizeRandom[1]),depth=random.randint(sizeRandom[0],sizeRandom[1]),width=random.randint(sizeRandom[0],sizeRandom[1]),name="ModCube1")
         
+        
         if(allowColor):
-            setShader(cube,colorSelect[0])
+            ranColor = colorSelect[random.randint(0,4)]
+            setShader(cube,ranColor)
             
         #do frame anim
         setKeyFrames(cube,minJitter,maxJitter,startFrame,endFrame)

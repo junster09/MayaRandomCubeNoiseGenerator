@@ -39,7 +39,7 @@ class UltamiteCubeNoiseGenerator(OWBC.OptionsWindow):
         mc.setParent("..")
         
         self.frame3 = mc.frameLayout(collapsable=True,label="Color attributes")
-        self.allowColorCheckBox = mc.checkBox(label="Use Color")
+        self.allowColorCheckBox = mc.checkBox(label="Use Random Color")
         
     def applyBtnCmd(self,*args):
         """ 
@@ -90,5 +90,3 @@ class UltamiteCubeNoiseGenerator(OWBC.OptionsWindow):
 
         mc.showWindow()
         
-win = UltamiteCubeNoiseGenerator()
-win.create()
