@@ -24,6 +24,11 @@ class UltamiteCubeNoiseGenerator(OWBC.OptionsWindow):
         self.applyName = "Generate Cubes"
         
     def displayOptions(self):
+        """
+        displayOptions()
+
+            this function will create the GUI Window.
+        """
         self.layout = mc.columnLayout(adjustableColumn = True)
         
         self.frame1 = mc.frameLayout(collapsable=True,label="Cube Number",width=512)
@@ -43,10 +48,14 @@ class UltamiteCubeNoiseGenerator(OWBC.OptionsWindow):
         
     def applyBtnCmd(self,*args):
         """ 
-        applyBtnCmd() will be called when the user presses Generate Cubes button 
-        This function will read values set by the user and pass it to ForWeekFourAssignment for cube generation
+        applyBtnCmd(*args)
+            INPUT:
+                *args               used in the base class, not used in this version
+            
+            this function is called when the user presses the "Generate Cubes" button on the GUI
+            it will take all of the information from the GUI and send it over to "ForWeekFourAssignment.py".
         """
-        self.commandDict = {}
+        self.commandDict = {} #command dictionary, for **kwarg use
         
         _cubeNum = mc.intFieldGrp(self.cubeIntField,q=True,v1=True)
         self.commandDict["numberOfCubes"] = _cubeNum
@@ -69,18 +78,26 @@ class UltamiteCubeNoiseGenerator(OWBC.OptionsWindow):
         _maxJit = [mc.intFieldGrp(self.maxJitIntField,q=True,v1=True),mc.intFieldGrp(self.maxJitIntField,q=True,v2=True),mc.intFieldGrp(self.maxJitIntField,q=True,v3=True)]
         self.commandDict["maxJitter"] = _maxJit
         
-        fwf.randomCubes(**self.commandDict)
+        fwf.randomCubes(**self.commandDict) #sending to fwf.
     
     def actionCmd(self,*args):
         """ 
-        actionCmd() will call applyBtnCmd() and close the window
+        actionCmd(*args)
+            INPUT:
+                *args               used in the base class, not used in this version
+
+            actionCmd() will call applyBtnCmd() and close the window
         """
         self.applyBtnCmd()
         mc.deleteUI(self.window,window=True)
         
     def helpMenuCmd(self,*args):
         """
-        helpMenuCmd() will create a new window with help information about the tool
+        helpMenuCmd(*args)
+            INPUT:
+                *args               used in the base class, not used in this version
+
+            helpMenuCmd() will create a new window with help information about the tool
         """
         mc.window( width=273 , height=175, title = "Ultamite Cube Noise Generator Help")
         mc.columnLayout( adjustableColumn=True )
